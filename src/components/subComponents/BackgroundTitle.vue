@@ -24,12 +24,9 @@ export default {
 
 <style scoped>
     .title {
-        font-family: system-ui;
-        font-size: 6em;
-        color: #050130;
-        font-weight: 800;
-            transform: rotate(
-        -90deg
-        ) translate(-5.7em, 2em);
+      font-family: system-ui;
+      font-size: 6em;
+      color: #05013036;
+      font-weight: 800;
     }
 </style>

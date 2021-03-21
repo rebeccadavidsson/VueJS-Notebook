@@ -1,4 +1,4 @@
-# twotter
+# Notebook
 
 ## Project setup
 ```

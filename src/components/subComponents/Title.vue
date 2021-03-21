@@ -18,5 +18,8 @@ export default {
     .title {
         color: white;
         font-size: 2em;
+        font-weight: 800;
+        padding-bottom: 1em;
+        white-space: pre;
     }
 </style>

@@ -1,35 +1,60 @@
 <template>
 
-    <div v-if="data.length > 1">
+    <div v-if="data.length > 0" class="notes-wrapper">
         <div v-for="(item) in data" v-bind:key="item">
-            <p> {{ item.value }} </p>
+            <div class="item">
+              <checkmark :item=item />
+              <p> {{ item.value }} </p>
+            </div>
         </div>
+
+        <div class="add-wrapper">
+          <form @submit.prevent="addItem()">
+            <div class="add">
+              <input 
+              v-model="newItem"
+              name="newItem"
+              autocomplete="off"
+              required=""
+              type="text" 
+              placeholder="Thought...">
+              <span @click="addItem()" class="addBtn">Add</span>
+            </div>
+          </form>
+        </div>
+
+        <a @click="removeItem()" class="mainbutton center-bottom"> 
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Remove active thoughts 
+        </a>
+  
     </div>
 
     <div v-else class="login-box">
-        
-
-        <form @submit.prevent="addTodo()">
-            <h2> Add Your First Note! </h2>
-            <div class="user-box">
-                <input type="text" autocomplete="off" name="title" required="">
-                <label>Title</label>
-            </div>
-            <div class="user-box">
-                <input v-model="newItem"
-                        name="newTodo"
-                        autocomplete="off"
-                        required="">
-                <label>Your Note</label>
-            </div>
-            <a @click="addItem()">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                Add Note 
-            </a>
-        </form>
+      <form @submit.prevent="addTodo()">
+          <h2> Add Your First Thought! </h2>
+          <div class="user-box">
+              <input type="text" autocomplete="off" name="title" required="">
+              <label>Title</label>
+          </div>
+          <div class="user-box">
+              <input v-model="newItem"
+                      name="newTodo"
+                      autocomplete="off"
+                      required="">
+              <label>Your Thought</label>
+          </div>
+          <a @click="addItem()" class="mainbutton"> 
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              Add Thought 
+          </a>
+      </form>
         
     </div>
 </template>
@@ -37,9 +62,14 @@
 <script>
 
 import { ref } from 'vue';
+import checkmark from './checkMark'
 
 export default {
     name: "Notes",
+    components: {
+      checkmark,
+    },
+
     setup() {
         const newItem = ref('');
         const defaultData = [{
@@ -47,14 +77,15 @@ export default {
             value: "Hmmm... There should be a reality show where flat-earthers have to find the edge of the world."
         }]
         const data = JSON.parse(localStorage.getItem('items')) || defaultData;
-        console.log(data.length);
+
         const items = ref(data);
 
         const addItem = () => {
+            console.log(newItem);
             if (newItem.value) {
                 items.value.push({
                     done: false,
-                    conntent: newItem.value
+                    value: newItem.value
                 });
                 newItem.value = "";
             }saveItem();
@@ -88,7 +119,62 @@ export default {
 </script>
 
 <style scoped>
+  .item {
+    background-color: #b6a4d636;
+    border-radius: 7px;
+    padding: 1em 2em;
+    margin-bottom: 1em;
+    display: grid;
+    grid-template-columns: 3.5em auto;
+    grid-column-gap: 1em;
+    align-items: center;
+  }
 
+.notes-wrapper {
+    position: relative;
+    height: 100%;
+}
+
+.add {
+  display: flex;
+}
+
+.add-wrapper {
+    background-color: #6561848c;
+    padding: 1em;
+    border-radius: 7px;
+}
+
+input {
+  margin: 0;
+  border: none;
+  width: 75%;
+  padding: 10px;
+  float: left;
+  font-size: 16px;
+  padding-left: 1.5em;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+/* Style the "Add" button */
+.addBtn {
+  padding: 10px;
+  width: 25%;
+  background: #d9d9d9;
+  color: #555;
+  float: left;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.addBtn:hover {
+  background-color: #bbb;
+}
 
 .login-box {
   position: absolute;
@@ -144,7 +230,7 @@ export default {
   font-size: 12px;
 }
 
-.login-box form a {
+.mainbutton {
   position: relative;
   display: inline-block;
   padding: 10px 20px;
@@ -157,23 +243,31 @@ export default {
   margin-top: 40px;
   letter-spacing: 4px
 }
+.center-bottom {
+  width: calc(100% - 2.5em);
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 4em;
+}
 
-.login-box a:hover {
+.mainbutton:hover {
   background: #ceb3ff;
   color: #fff;
   border-radius: 5px;
+  cursor: pointer;
   box-shadow: 0 0 5px #ceb3ff,
               0 0 25px #ceb3ff,
               0 0 50px #ceb3ff,
               0 0 100px #ceb3ff;
 }
 
-.login-box a span {
+.mainbutton span {
   position: absolute;
   display: block;
 }
 
-.login-box a span:nth-child(1) {
+.mainbutton span:nth-child(1) {
   top: 0;
   left: -100%;
   width: 100%;
@@ -191,7 +285,7 @@ export default {
   }
 }
 
-.login-box a span:nth-child(2) {
+.mainbutton span:nth-child(2) {
   top: -100%;
   right: 0;
   width: 2px;
@@ -210,7 +304,7 @@ export default {
   }
 }
 
-.login-box a span:nth-child(3) {
+.mainbutton span:nth-child(3) {
   bottom: 0;
   right: -100%;
   width: 100%;
@@ -229,7 +323,7 @@ export default {
   }
 }
 
-.login-box a span:nth-child(4) {
+.mainbutton span:nth-child(4) {
   bottom: -100%;
   left: 0;
   width: 2px;

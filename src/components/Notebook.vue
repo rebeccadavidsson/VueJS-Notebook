@@ -1,9 +1,9 @@
 <template>
 
     <div class="wrapper">
-        <BackgroundTitle title="NoteBook" location="right"/>
+        <BackgroundTitle title="ThoughtBook" location="right"/>
         <div class="inner">
-            <Title title="Your Personal NoteBook" />
+            <Title title="Your Personal ThoughtBook" />
             <Notes />
         </div>
     </div>
@@ -21,7 +21,7 @@ export default {
   components: {
       BackgroundTitle,
       Title,
-      Notes
+      Notes,
   }
 }
 </script>
@@ -31,7 +31,7 @@ export default {
 
 .wrapper {
     background-color: #979aa982;
-    width: 80%;
+    width: 60%;
     height: calc(90% - 5em);
     margin: 0 auto;
     border-radius: 7px;
@@ -40,7 +40,7 @@ export default {
 .inner {
     color: white;
     padding: 4em 5em;
-    font-weight: 800;
+    height: calc(100% - 8em);
 }
 
 </style>
