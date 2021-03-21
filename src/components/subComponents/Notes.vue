@@ -78,10 +78,9 @@ export default {
         }]
         const data = JSON.parse(localStorage.getItem('items')) || defaultData;
 
-        const items = ref(data);
+        let items = ref(data);
 
         const addItem = () => {
-            console.log(newItem);
             if (newItem.value) {
                 items.value.push({
                     done: false,
@@ -96,9 +95,11 @@ export default {
             saveItem();
         }
 
-        const removeItem = (index) => {
-            items.value.splice(index, 1)
-            saveItem();
+        const removeItem = () => {
+            let filteredItems = items.value.filter(item => item.done === false);
+            filteredItems = JSON.parse(JSON.stringify(filteredItems));
+            localStorage.setItem("items", JSON.stringify(filteredItems))
+            items = filteredItems;
         }
         
         const saveItem = () => { localStorage.setItem("items", JSON.stringify(items.value)) }
